@@ -11,37 +11,37 @@ var io = socketIO(server);
 
 app.use( express.static(path.join(__dirname,'/../public')));
 
-io.on('connection', (socket)=>{
+io.on('connection', function(socket){
 	console.log('New user connected!');
 
-	socket.on('disconnect', ()=>{
+	socket.on('disconnect', function(){
 		console.log('User disconnected');
 	});
 
-	socket.on('createEmail', (email)=>{
-		console.log('Create Email', email);
-	});
-
-	// socket.emit('newEmail', {
-	// 	from:"server@gmail.com",
-	// 	text:"Hey i am server ",
-	// 	createdAt:123
-	// });
-
-	socket.on('createMessage', (msg)=>{
-		console.log(' createMessage',msg);
-	});
 	
-	socket.emit('newMessage', {
-		from:"server@gmail.com",
-		text:"hello this is reply",
-		createdAt: new Date().getTime()
+	
+	socket.on('createMessage', function(msg){
+		console.log(' createMessage',msg);
+
+		io.emit('newMessage', {
+			from:msg.from,
+			text:msg.text,
+			createdAt:new Date().getTime()
+		});
+
+
 	});
+
+	// socket.emit('newMessage', {
+	// 	from:"server@gmail.com",
+	// 	text:"hello this is reply",
+	// 	createdAt: new Date().getTime()
+	// });
 
 
 
 });
 
-server.listen(port, ()=>{
+server.listen(port, function(){
 	console.log('Server is running on port: '+port);
 });
