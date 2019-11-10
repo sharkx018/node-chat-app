@@ -32,17 +32,23 @@ io.on('connection', function(socket)
 	socket.on('createMessage', function(msg, callback)
 	{
 		var user = users.getUser(socket.id);
-		console.log('createMessage',msg);
-		socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, msg.text));
-		socket.emit('newMessage', generateMessage('me',  msg.text));
+		if(user && isRealString(msg.text)){
+			console.log('createMessage',msg);
+			socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, msg.text));
+			socket.emit('newMessage', generateMessage('me',  msg.text));
+			
+		}
 		callback();
+		
 
 	});
 
 	socket.on('createLocationMessage', function(pos)
 	{
 		var user = users.getUser(socket.id);
+		if(user){
 			io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, pos.lat, pos.long));
+		}
 	});
 
 	socket.on('join', function(param, callback)

@@ -71,7 +71,7 @@ socket.on('newMessage', function(msg){
 	// jQuery('#msg-list').append(li);
 });
 //+' '+formattedTime 
-socket.on('newLocationMessage', (msg)=>{
+socket.on('newLocationMessage', function(msg){
 
 	var template = jQuery('#location-message-template').html();
 
@@ -100,7 +100,6 @@ jQuery('#message-form').on('submit', function(e){
 	e.preventDefault();
 	var messagebox = jQuery('[name=message]');
 	socket.emit('createMessage', {
-		from:'User',
 		text:messagebox.val()
 	}, function(){
 		messagebox.val('');
