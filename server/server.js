@@ -31,8 +31,9 @@ io.on('connection', function(socket)
 
 	socket.on('createMessage', function(msg, callback)
 	{
+		var user = users.getUser(socket.id);
 		console.log('createMessage',msg);
-		socket.broadcast.emit('newMessage', generateMessage(msg.from, msg.text));
+		socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, msg.text));
 		socket.emit('newMessage', generateMessage('me',  msg.text));
 		callback();
 
@@ -40,9 +41,8 @@ io.on('connection', function(socket)
 
 	socket.on('createLocationMessage', function(pos)
 	{
-			io.emit('newLocationMessage', generateLocationMessage('Admin', pos.lat, pos.long));
-		}, function(){
-		
+		var user = users.getUser(socket.id);
+			io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, pos.lat, pos.long));
 	});
 
 	socket.on('join', function(param, callback)
@@ -56,7 +56,7 @@ io.on('connection', function(socket)
 		users.addUser(socket.id, param.name, param.room);
 		io.to(param.room).emit('updatedUserList', users.getUserList(param.room));
 		socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-		socket.broadcast.to(param.room).emit('newMessage',generateMessage('Admin', param.name+' has added'));
+		socket.broadcast. to(param.room).emit('newMessage',generateMessage('Admin', param.name+' has added'));
 		callback();
 		//socket.leave()
 		//io.to('the chat room').emit() // to all in room
