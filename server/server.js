@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 const http = require('http');
-const {generateMessage} = require('./utils/message.js');
+const {generateMessage, generateLocationMessage} = require('./utils/message.js');
 const socketIO = require('socket.io');
 
 const port = process.env.PORT || 3001;
@@ -21,15 +21,25 @@ io.on('connection', function(socket)
 
 	socket.on('createMessage', function(msg, callback){
 		console.log('createMessage',msg);
-		// io.emit('newMessage', generateMessage(msg.from, msg.text));
 		socket.broadcast.emit('newMessage', generateMessage(msg.from, msg.text));
 		callback('Delieved!');
 
 	});
 
+	socket.on('createLocationMessage', function(pos){
+		io.emit('newLocationMessage', generateLocationMessage('Admin', pos.lat, pos.long));
+	}, function(){
+		
+	});
+
 	socket.on('disconnect', function(){
+		socket.broadcast.emit('newMessage',generateMessage('Admin', 'User disconnected'));
 		console.log('User disconnected');
 	});
+
+
+
+
 
 	
 });
