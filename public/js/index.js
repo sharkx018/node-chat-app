@@ -11,7 +11,7 @@ socket.on('disconnect', function(){
 
 
 
-socket.on('newMessage', (msg)=>{
+socket.on('newMessage', function(msg){
 	console.log('newMessage',msg);
 	var li = jQuery('<li></li>');
 	li.text(msg.from +": "+msg.text);
@@ -33,7 +33,7 @@ jQuery('#message-form').on('submit', function(e){
 		from:'User',
 		text:jQuery('[name=message]').val()
 	}, function(d){
-		//console.log(d);
+		console.log(d);
 	} )
 });
 

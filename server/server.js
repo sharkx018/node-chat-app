@@ -19,28 +19,29 @@ io.on('connection', function(socket)
 	socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 	socket.broadcast.emit('newMessage',generateMessage('Admin', 'New user added'));
 
-	socket.on('createMessage', function(msg, callback){
-		console.log('createMessage',msg);
-		socket.broadcast.emit('newMessage', generateMessage(msg.from, msg.text));
-		callback('Delieved!');
-
-	});
-
-	socket.on('createLocationMessage', function(pos){
-		io.emit('newLocationMessage', generateLocationMessage('Admin', pos.lat, pos.long));
-	}, function(){
-		
-	});
-
-	socket.on('disconnect', function(){
+	socket.on('disconnect', function()
+	{
 		socket.broadcast.emit('newMessage',generateMessage('Admin', 'User disconnected'));
 		console.log('User disconnected');
 	});
 
+	socket.on('createMessage', function(msg, callback)
+	{
+		console.log('createMessage',msg);
+		socket.broadcast.emit('newMessage', generateMessage(msg.from, msg.text));
+		socket.emit('newMessage', generateMessage('me',  msg.text));
+		callback('Delieved!');
 
+	});
 
+	socket.on('createLocationMessage', function(pos)
+	{
+			io.emit('newLocationMessage', generateLocationMessage('Admin', pos.lat, pos.long));
+		}, function(){
+		
+	});
 
-
+	
 	
 });
 
