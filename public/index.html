@@ -2,23 +2,28 @@
 <html>
 <head>
 	<title>Home Page</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
-<body>
-	<p>Welcome to the chat app.</p>
+<body class="chat">
 
-	<ol id="msg-list">
+	<div class="chat__sidebar">
+		<h3>People</h3>
+		<div id="users"></div>
+	</div>
+
+	<div class="chat__main">
 		
+		<ol id="msg-list" class="chat__messages"></ol>
 
-	</ol>
-
-	<form id="message-form">
-		<input type="text" name="message" placeholder="Enter the message">
-		<button>Send</button>
-		<button id="geo-button" >Send Location</button>
-	</form>
-
-
-	
+		<div class="chat__footer">
+			<form id="message-form" >
+			<input name="message" type="text" placeholder="Enter the message" autofocus autocomplete="off">
+			<button>Send</button>
+			<button id="geo-button" >Send location</button>
+			</form>
+		</div>
+		
+	</div>
 
 	<script src="socket.io/socket.io.js"></script>
 	<script src="/js/libs/jQuery.js"></script>

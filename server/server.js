@@ -30,7 +30,7 @@ io.on('connection', function(socket)
 		console.log('createMessage',msg);
 		socket.broadcast.emit('newMessage', generateMessage(msg.from, msg.text));
 		socket.emit('newMessage', generateMessage('me',  msg.text));
-		callback('Delieved!');
+		callback();
 
 	});
 
